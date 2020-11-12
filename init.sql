@@ -8,8 +8,9 @@ create table users (
 );
 
 create table items (
-  id      uuid not null primary key default uuid_generate_v4(),
-  user_id integer not null references users(id) on delete cascade,
-  name    varchar(255) not null unique,
-  content text not null
+  id          uuid not null primary key default uuid_generate_v4(),
+  user_id     integer not null references users(id) on delete cascade,
+  name        varchar(100) not null unique,
+  description varchar(150),
+  content     text not null
 );

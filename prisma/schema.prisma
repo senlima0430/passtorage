@@ -8,11 +8,12 @@ datasource db {
 }
 
 model items {
-  id      String @id @default(dbgenerated())
-  user_id Int
-  name    String @unique
-  content String
-  users   users  @relation(fields: [user_id], references: [id])
+  id          String  @id @default(dbgenerated())
+  user_id     Int
+  name        String  @unique
+  description String?
+  content     String
+  users       users   @relation(fields: [user_id], references: [id])
 }
 
 model users {
