@@ -1,11 +1,12 @@
 import { FC, useEffect } from 'react'
-import { VStack } from '@chakra-ui/core'
+import { FiRefreshCw } from 'react-icons/fi'
+import { VStack, Flex, Heading, IconButton } from '@chakra-ui/core'
 
 import { useGetItems } from 'api/item'
 import { SecretItem } from './Secret'
 
 export const ItemList: FC = () => {
-  const { data, error, isLoading } = useGetItems()
+  const { data, error, mutate, isLoading } = useGetItems()
 
   useEffect(() => {
     console.log(data)
@@ -18,10 +19,22 @@ export const ItemList: FC = () => {
   if (error) return <p>Error occurred</p>
 
   return (
-    <VStack my="2.5vh" spacing="0.5rem">
-      {data?.data.map(item => (
-        <SecretItem key={item.id} item={item} />
-      ))}
-    </VStack>
+    <>
+      <Flex py="1rem" px="0.5rem" align="center" justify="space-between">
+        <Heading size="lg">List</Heading>
+        <IconButton
+          size="sm"
+          variant="unstyled"
+          aria-label="refresh"
+          icon={<FiRefreshCw style={{ margin: '0 auto' }} />}
+          onClick={() => mutate()}
+        />
+      </Flex>
+      <VStack my="2.5vh" spacing="0.5rem">
+        {data?.data.map(item => (
+          <SecretItem key={item.id} item={item} />
+        ))}
+      </VStack>
+    </>
   )
 }

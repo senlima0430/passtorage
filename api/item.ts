@@ -13,7 +13,7 @@ type GetItemsResponse = {
 export const useGetItems = (page = 1, size = 10) => {
   const url = `${baseUrl}/api/item/all?page=${page}&size=${size}`
 
-  const { data, error } = useSWR<GetItemsResponse>(url, fetcher)
+  const { data, error, mutate } = useSWR<GetItemsResponse>(url, fetcher)
 
-  return { data, error, isLoading: !error && !data }
+  return { data, error, mutate, isLoading: !error && !data }
 }
