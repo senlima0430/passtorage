@@ -1,0 +1,22 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "project": "./tsconfig.json'",
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:prettier/react",
+    "plugin:prettier/@typescript-eslint"
+  ],
+  "rules": {
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
+  }
+}
