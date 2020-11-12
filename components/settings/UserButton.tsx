@@ -7,7 +7,7 @@ export function UserButton() {
 
   return (
     <IconButton
-      variant="ghost"
+      variant="unstyled"
       aria-label="to user page"
       icon={<FaRegUserCircle />}
       onClick={() => router.push('/user')}

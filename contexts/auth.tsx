@@ -1,4 +1,4 @@
-import { createContext, useState, FC, useEffect } from 'react'
+import { FC, createContext, useState, useEffect, useContext } from 'react'
 
 type AuthType = {
   status: boolean
@@ -33,7 +33,13 @@ export const AuthProvider: FC = ({ children }) => {
         }
       })
       .then(info => {
-        console.log(info)
+        setAuth({
+          status: true,
+          user: {
+            id: info.data.id,
+            name: info.data.name,
+          },
+        })
       })
       .catch(error => {
         console.log(error)
@@ -48,4 +54,19 @@ export const AuthProvider: FC = ({ children }) => {
       {children}
     </AuthContext.Provider>
   )
+}
+
+import { useRouter } from 'next/router'
+
+export const useRequireLogin = () => {
+  const router = useRouter()
+  const { auth, loading } = useContext(AuthContext)
+
+  useEffect(() => {
+    if (!loading && !auth.status) {
+      router.push('/login')
+    }
+  }, [loading])
+
+  return { user: auth.user, loading }
 }

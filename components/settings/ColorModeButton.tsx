@@ -6,7 +6,7 @@ export function ColorModeButton() {
 
   return (
     <IconButton
-      variant="ghost"
+      variant="unstyled"
       aria-label="switch color mode"
       icon={colorMode === 'light' ? <FaRegMoon /> : <FaRegSun />}
       onClick={toggleColorMode}

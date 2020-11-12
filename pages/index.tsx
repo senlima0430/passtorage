@@ -1,40 +1,37 @@
 import { GetServerSideProps } from 'next'
 import { PrismaClient } from '@prisma/client'
 
-import { getToken } from 'utils/token'
-
 const prisma = new PrismaClient()
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const userCount = await prisma.users.count()
-  const token = await getToken(req)
-
+  console.log(userCount)
   return {
-    props: {
-      userCount,
-      loggedIn: Boolean(token),
-    },
+    props: { userCount },
   }
 }
 
-import { FC } from 'react'
+import { FC, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { Heading } from '@chakra-ui/core'
 
+import { AuthContext } from 'contexts/auth'
 import { CenteredLayout } from 'components/layouts/Centered'
 import { CreateAccountForm } from 'components/forms/CreateAccount'
 
 type Props = {
   userCount: number
-  loggedIn: boolean
 }
 
-const Index: FC<Props> = ({ userCount, loggedIn }) => {
+const Index: FC<Props> = ({ userCount }) => {
   const router = useRouter()
+  const { auth, loading } = useContext(AuthContext)
 
-  if (typeof window !== 'undefined' && userCount > 0) {
-    router.push(loggedIn ? '/dashboard' : '/login')
-  }
+  useEffect(() => {
+    if (userCount > 0 && !loading) {
+      router.push(auth.status ? '/dashboard' : '/login')
+    }
+  }, [loading])
 
   return (
     <CenteredLayout>
