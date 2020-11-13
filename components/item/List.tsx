@@ -1,6 +1,14 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { FiRefreshCw } from 'react-icons/fi'
-import { VStack, Flex, Heading, IconButton } from '@chakra-ui/core'
+import {
+  Text,
+  Flex,
+  VStack,
+  Center,
+  Heading,
+  Spinner,
+  IconButton,
+} from '@chakra-ui/core'
 
 import { useGetItems } from 'api/item'
 import { SecretItem } from './Secret'
@@ -8,12 +16,23 @@ import { SecretItem } from './Secret'
 export const ItemList: FC = () => {
   const { data, error, mutate, isLoading } = useGetItems()
 
-  useEffect(() => {
+  const deleteItem = async (id: string) => {
+    const res = await fetch(`/api/item/delete/${id}`, {
+      method: 'DELETE',
+    })
+    const data = (await res.json()) as Record<string, any>
     console.log(data)
-  }, [data])
+    if (data.ok) {
+      await mutate()
+    }
+  }
 
   if (isLoading) {
-    return <div>Loading items...</div>
+    return (
+      <Center w="100%" h="5vh">
+        <Spinner size="lg" />
+      </Center>
+    )
   }
 
   if (error) return <p>Error occurred</p>
@@ -31,8 +50,17 @@ export const ItemList: FC = () => {
         />
       </Flex>
       <VStack my="2.5vh" spacing="0.5rem">
+        {data?.data.length === 0 && (
+          <Center w="100%" h="5vh">
+            <Text>Go to storage a new item</Text>
+          </Center>
+        )}
         {data?.data.map(item => (
-          <SecretItem key={item.id} item={item} />
+          <SecretItem
+            key={item.id}
+            item={item}
+            deleteFunc={() => deleteItem(item.id)}
+          />
         ))}
       </VStack>
     </>

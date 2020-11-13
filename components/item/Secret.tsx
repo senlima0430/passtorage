@@ -7,15 +7,18 @@ import {
   HStack,
   IconButton,
   useClipboard,
+  useColorMode,
 } from '@chakra-ui/core'
 
 import { ItemType } from 'interfaces'
 
 type Props = {
   item: ItemType
+  deleteFunc: () => Promise<void>
 }
 
-export const SecretItem: FC<Props> = ({ item }) => {
+export const SecretItem: FC<Props> = ({ item, deleteFunc }) => {
+  const { colorMode } = useColorMode()
   const [isEdit, setEdit] = useState(false)
   const { onCopy } = useClipboard(item.content)
 
@@ -24,7 +27,7 @@ export const SecretItem: FC<Props> = ({ item }) => {
       pos="relative"
       w="100%"
       p="1rem"
-      border="1px solid black"
+      border={colorMode === 'light' ? '1px solid black' : '1px solid white'}
       borderRadius="12px"
     >
       <HStack spacing="0.5em" pos="absolute" top="1rem" right="1rem">
@@ -58,7 +61,7 @@ export const SecretItem: FC<Props> = ({ item }) => {
               variant="unstyled"
               aria-label="trash"
               icon={<FiTrash style={{ margin: '0 auto' }} />}
-              onClick={() => setEdit(true)}
+              onClick={() => deleteFunc()}
             />
           </>
         )}

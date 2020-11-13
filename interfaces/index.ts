@@ -3,6 +3,11 @@ export type UserInputType = {
   password: string
 }
 
+export type UserUpdateType = {
+  name?: string
+  password?: string
+}
+
 export type ItemType = {
   user_id: number
   id: string

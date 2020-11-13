@@ -1,6 +1,6 @@
 import Joi from 'joi'
 import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC, useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { joiResolver } from '@hookform/resolvers/joi'
 import {
@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/core'
 
 import { UserInputType } from 'interfaces'
+import { AuthContext } from 'contexts/auth'
 
 const schema = Joi.object({
   name: Joi.string().required(),
@@ -23,6 +24,7 @@ const schema = Joi.object({
 export const LoginForm: FC = () => {
   const toast = useToast()
   const router = useRouter()
+  const { setAuth } = useContext(AuthContext)
   const [submitted, setSubmitted] = useState(false)
   const { register, handleSubmit, reset, errors } = useForm({
     resolver: joiResolver(schema),
@@ -40,7 +42,22 @@ export const LoginForm: FC = () => {
       .then(res => res.json())
       .then(data => {
         if (data.ok) {
-          router.push('/dashboard')
+          fetch('/api/auth/verify')
+            .then(res => {
+              if (res.status === 200) {
+                return res.json()
+              }
+            })
+            .then(info => {
+              setAuth({
+                status: true,
+                user: {
+                  id: info.data.id,
+                  name: info.data.name,
+                },
+              })
+              router.push('/dashboard')
+            })
         } else {
           toast({
             title: 'Login failed',

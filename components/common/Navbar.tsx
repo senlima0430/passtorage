@@ -1,12 +1,19 @@
 import { useRouter } from 'next/router'
-import { Flex, Box, IconButton } from '@chakra-ui/core'
 import { FiHome, FiPlus, FiSettings } from 'react-icons/fi'
+import { Flex, Box, IconButton, useColorMode } from '@chakra-ui/core'
 
 export const Navbar = () => {
   const router = useRouter()
+  const { colorMode } = useColorMode()
+
+  const settingsRole = /\/settings(\/\w+)?/g
 
   return (
-    <Box borderBottom="1px solid black">
+    <Box
+      borderBottom={
+        colorMode === 'light' ? '1px solid black' : '1px solid white'
+      }
+    >
       <Flex
         mx="auto"
         w="90%"
@@ -17,16 +24,16 @@ export const Navbar = () => {
         {router.pathname !== '/dashboard' && (
           <IconButton
             variant="unstyled"
-            aria-label="add item"
+            aria-label="home page"
             icon={<FiHome style={{ margin: '0 auto' }} />}
             onClick={() => router.push('/dashboard')}
           />
         )}
 
-        {router.pathname !== '/settings' && (
+        {!router.pathname.match(settingsRole) && (
           <IconButton
             variant="unstyled"
-            aria-label="add item"
+            aria-label="setting"
             icon={<FiSettings style={{ margin: '0 auto' }} />}
             onClick={() => router.push('/settings')}
           />
