@@ -11,6 +11,7 @@ import {
   useColorMode,
 } from '@chakra-ui/core'
 
+import { LogoutButton } from 'components/settings/LogoutButton'
 import { DashboardLayout } from 'components/layouts/Dashboard'
 
 const Settings: FC = () => {
@@ -23,7 +24,7 @@ const Settings: FC = () => {
       </Heading>
       <VStack align="stretch" spacing="1rem">
         <Flex h="40px" align="center" justify="space-between">
-          <Text lineHeight="40px">暗色模式</Text>
+          <Text lineHeight="40px">Dark mode</Text>
           <Switch
             colorScheme="green"
             isChecked={colorMode === 'dark'}
@@ -39,7 +40,7 @@ const Settings: FC = () => {
           rightIcon={<FiChevronRight style={{ fontSize: '20px' }} />}
           onClick={() => router.push('/settings/user')}
         >
-          更改帳號
+          Update password
         </Button>
         <Button
           d="flex"
@@ -49,13 +50,9 @@ const Settings: FC = () => {
           justifyContent="space-between"
           rightIcon={<FiChevronRight style={{ fontSize: '20px' }} />}
         >
-          關於
+          About
         </Button>
-        <Button d="flex" w="100%" h="40px">
-          <Text color="red.500" lineHeight="40px">
-            登出
-          </Text>
-        </Button>
+        <LogoutButton />
       </VStack>
     </DashboardLayout>
   )

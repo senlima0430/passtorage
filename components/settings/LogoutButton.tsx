@@ -1,16 +1,14 @@
 import { useContext } from 'react'
 import { useRouter } from 'next/router'
-import { FiLogOut } from 'react-icons/fi'
 import {
   Text,
   Button,
-  IconButton,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalHeader,
   ModalFooter,
+  ModalContent,
+  ModalOverlay,
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/core'
@@ -36,12 +34,11 @@ export function LogoutButton() {
 
   return (
     <>
-      <IconButton
-        aria-label="logout"
-        icon={<FiLogOut />}
-        variant="ghost"
-        onClick={onOpen}
-      />
+      <Button d="flex" w="100%" h="40px" onClick={onOpen}>
+        <Text color="red.500" lineHeight="40px">
+          Logout
+        </Text>
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
